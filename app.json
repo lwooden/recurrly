@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "recurrly-jsm",
-    "slug": "recurrly-jsm",
+    "name": "recurrly",
+    "slug": "recurrly",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -18,7 +18,8 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "foregroundImage": "./assets/images/android-icon-foreground.png",
+        "backgroundImage": "./assets/images/android-icon-background.png",
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
@@ -32,6 +33,15 @@
     "plugins": [
       "expo-router"
     ],
+    "fonts": [
+      "./assets/fonts/PlusJakartaSans-Regular.ttf", 
+      "./assets/fonts/PlusJakartaSans-Bold.ttf", 
+      "./assets/fonts/PlusJakartaSans-Medium.ttf",
+      "./assets/fonts/PlusJakartaSans-SemiBold.ttf",
+      "./assets/fonts/PlusJakartaSans-ExtraBold.ttf",
+      "./assets/fonts/PlusJakartaSans-Light.ttf"
+    ],
+
     "experiments": {
       "typedRoutes": true
     }
