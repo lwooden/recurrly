@@ -31,17 +31,18 @@
       "favicon": "./assets/images/favicon.png"
     },
     "plugins": [
-      "expo-router"
+      "expo-router",
+      "@clerk/expo",
+      "expo-secure-store"
     ],
     "fonts": [
-      "./assets/fonts/PlusJakartaSans-Regular.ttf", 
-      "./assets/fonts/PlusJakartaSans-Bold.ttf", 
+      "./assets/fonts/PlusJakartaSans-Regular.ttf",
+      "./assets/fonts/PlusJakartaSans-Bold.ttf",
       "./assets/fonts/PlusJakartaSans-Medium.ttf",
       "./assets/fonts/PlusJakartaSans-SemiBold.ttf",
       "./assets/fonts/PlusJakartaSans-ExtraBold.ttf",
       "./assets/fonts/PlusJakartaSans-Light.ttf"
     ],
-
     "experiments": {
       "typedRoutes": true
     }
