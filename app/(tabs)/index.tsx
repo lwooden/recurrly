@@ -6,13 +6,14 @@ import UpcomingSubscriptionCard from "@/components/UpcomingSubscriptionCard";
 import {
 	HOME_BALANCE,
 	HOME_SUBSCRIPTIONS,
-	HOME_USER,
 	UPCOMING_SUBSCRIPTIONS,
 } from "@/constants/data";
 import { icons } from "@/constants/icons";
-import image from "@/constants/image";
+import images from "@/constants/image";
 import { formatCurrency } from "@/lib/utils";
+import { useUser } from "@clerk/expo";
 import dayjs from "dayjs";
+import { Redirect } from "expo-router";
 import { styled } from "nativewind";
 import React, { useState } from "react";
 import { FlatList, Image, Text, View } from "react-native";
@@ -24,6 +25,18 @@ export default function Index() {
 	const [expandedSubscriptionId, setExpandedSubscriptionId] = useState<
 		string | null
 	>(null);
+	const { user } = useUser();
+	if (!user) {
+		return <Redirect href="/(auth)/sign-in" />;
+	}
+
+	// console.log(user);
+	const displayName =
+		user?.firstName ||
+		user?.fullName ||
+		user?.emailAddresses[0]?.emailAddress ||
+		"User";
+
 	return (
 		<SafeAreaView className="flex-1 p-5 bg-background">
 			{/* The ListHeaderComponent Prop makes the entire screen scrollable */}
@@ -32,8 +45,14 @@ export default function Index() {
 					<>
 						<View className="home-header">
 							<View className="home-user">
-								<Image source={image.avatar} className="home-avatar" />
-								<Text className="home-user-name">{HOME_USER.name}</Text>
+								<Image
+									source={
+										user?.imageUrl ? { uri: user.imageUrl } : images.avatar
+									}
+									className="home-avatar"
+								/>
+								{/* <UserButton /> */}
+								<Text className="home-user-name">{displayName}</Text>
 							</View>
 							<Image source={icons.add} className="home-add-icon" />
 						</View>
