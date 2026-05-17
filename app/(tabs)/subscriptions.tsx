@@ -58,7 +58,9 @@ export default function Subscriptions() {
 
 	return (
 		<SafeAreaView className="flex-1 p-5 bg-background">
-			<Text className="mb-4 text-2xl font-sans-bold text-primary">Subscriptions</Text>
+			<Text className="mb-4 text-2xl font-sans-bold text-primary">
+				Subscriptions
+			</Text>
 			<TextInput
 				className="auth-input mb-5"
 				value={searchQuery}
@@ -70,6 +72,7 @@ export default function Subscriptions() {
 				returnKeyType="search"
 			/>
 			<FlatList
+				keyboardDismissMode="on-drag"
 				className="flex-1"
 				data={filteredSubscriptions}
 				renderItem={({ item }) => (
