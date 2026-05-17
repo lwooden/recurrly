@@ -1,3 +1,4 @@
+import { Link } from 'expo-router'
 import React from 'react'
 import { Text, TouchableOpacity, View } from 'react-native'
 
@@ -6,7 +7,9 @@ const ListHeading = ({ title }: ListHeadingProps) => {
     <View className="list-head">
       <Text className="list-title">{title}</Text>
       <TouchableOpacity className="list-action">
+        <Link href="/subscriptions" asChild>
         <Text className="list-action-text">View All</Text>
+        </Link>
       </TouchableOpacity>
     </View>
   )
