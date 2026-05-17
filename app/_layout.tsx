@@ -1,4 +1,7 @@
 import "@/global.css";
+import { ClerkProvider } from "@clerk/expo";
+import { tokenCache } from "@clerk/expo/token-cache";
+import * as WebBrowser from "expo-web-browser";
 import {
 	DarkTheme,
 	DefaultTheme,
@@ -11,6 +14,16 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/components/useColorScheme";
 import { useFonts } from "expo-font";
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY ?? "";
+
+if (!publishableKey) {
+	throw new Error(
+		"Missing EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY. Add it to your environment (see .env.example).",
+	);
+}
+
+WebBrowser.maybeCompleteAuthSession();
 
 export {
 	// Catch any errors thrown by the Layout component.
@@ -48,7 +61,11 @@ export default function RootLayout() {
 		return null;
 	}
 
-	return <RootLayoutNav />;
+	return (
+		<ClerkProvider publishableKey={publishableKey} tokenCache={tokenCache}>
+			<RootLayoutNav />
+		</ClerkProvider>
+	);
 }
 
 function RootLayoutNav() {
@@ -56,9 +73,11 @@ function RootLayoutNav() {
 
 	return (
 		<ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-			<Stack>
-				<Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-				{/* <Stack.Screen name="modal" options={{ presentation: "modal" }} /> */}
+			<Stack screenOptions={{ headerShown: false }}>
+				<Stack.Screen name="(tabs)" />
+				<Stack.Screen name="(auth)" />
+				<Stack.Screen name="onboarding" />
+				<Stack.Screen name="subscriptions/[id]" />
 			</Stack>
 		</ThemeProvider>
 	);
