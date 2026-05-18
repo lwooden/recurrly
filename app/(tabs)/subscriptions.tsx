@@ -1,5 +1,5 @@
 import SubscriptionCard from "@/components/SubscriptionCard";
-import { HOME_SUBSCRIPTIONS } from "@/constants/data";
+import { useSubscriptionsStore } from "@/store/useSubscriptionsStore";
 import { colors } from "@/constants/theme";
 import { styled } from "nativewind";
 import { useEffect, useMemo, useState } from "react";
@@ -24,6 +24,7 @@ function subscriptionMatchesQuery(sub: Subscription, q: string): boolean {
 }
 
 export default function Subscriptions() {
+	const subscriptions = useSubscriptionsStore((s) => s.subscriptions);
 	const [searchQuery, setSearchQuery] = useState("");
 	const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
 	const [expandedSubscriptionId, setExpandedSubscriptionId] = useState<
@@ -40,10 +41,10 @@ export default function Subscriptions() {
 	const filteredSubscriptions = useMemo(() => {
 		const q = debouncedSearchQuery.trim().toLowerCase();
 		if (!q) {
-			return HOME_SUBSCRIPTIONS;
+			return subscriptions;
 		}
-		return HOME_SUBSCRIPTIONS.filter((s) => subscriptionMatchesQuery(s, q));
-	}, [debouncedSearchQuery]);
+		return subscriptions.filter((s) => subscriptionMatchesQuery(s, q));
+	}, [debouncedSearchQuery, subscriptions]);
 
 	useEffect(() => {
 		if (
