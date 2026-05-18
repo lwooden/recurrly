@@ -1,13 +1,14 @@
 // index is the entry point for the application. It does not have a tab associated with it
 
+import CreateSubscriptionModal from "@/components/CreateSubscriptionModal";
 import ListHeading from "@/components/ListHeading";
 import SubscriptionCard from "@/components/SubscriptionCard";
 import UpcomingSubscriptionCard from "@/components/UpcomingSubscriptionCard";
 import {
 	HOME_BALANCE,
-	HOME_SUBSCRIPTIONS,
 	UPCOMING_SUBSCRIPTIONS,
 } from "@/constants/data";
+import { useSubscriptionsStore } from "@/store/useSubscriptionsStore";
 import { icons } from "@/constants/icons";
 import images from "@/constants/image";
 import { formatCurrency } from "@/lib/utils";
@@ -15,13 +16,16 @@ import { useUser } from "@clerk/expo";
 import dayjs from "dayjs";
 import { Redirect } from "expo-router";
 import { styled } from "nativewind";
-import React, { useState } from "react";
-import { FlatList, Image, Text, View } from "react-native";
+import { useState } from "react";
+import { FlatList, Image, Pressable, Text, View } from "react-native";
 import { SafeAreaView as RNSafeAreaView } from "react-native-safe-area-context";
 
 const SafeAreaView = styled(RNSafeAreaView);
 
 export default function Index() {
+	const subscriptions = useSubscriptionsStore((s) => s.subscriptions);
+	const addSubscription = useSubscriptionsStore((s) => s.addSubscription);
+	const [createModalVisible, setCreateModalVisible] = useState(false);
 	const [expandedSubscriptionId, setExpandedSubscriptionId] = useState<
 		string | null
 	>(null);
@@ -54,7 +58,13 @@ export default function Index() {
 								{/* <UserButton /> */}
 								<Text className="home-user-name">{displayName}</Text>
 							</View>
-							<Image source={icons.add} className="home-add-icon" />
+							<Pressable
+								onPress={() => setCreateModalVisible(true)}
+								accessibilityRole="button"
+								accessibilityLabel="Add subscription"
+							>
+								<Image source={icons.add} className="home-add-icon" />
+							</Pressable>
 						</View>
 						<View className="home-balance-card">
 							<Text className="home-balance-label">Balance</Text>
@@ -90,7 +100,7 @@ export default function Index() {
 						<ListHeading title="All Subscriptions" />
 					</>
 				)}
-				data={HOME_SUBSCRIPTIONS}
+				data={subscriptions}
 				renderItem={({ item }) => (
 					<SubscriptionCard
 						{...item}
@@ -112,17 +122,12 @@ export default function Index() {
 				// Provides Padding at the bottom of the list to prevent the content from being cut off by the bottom of the screen
 				contentContainerClassName="pb-20"
 			/>
-			{/* <SubscriptionCard
-					{...HOME_SUBSCRIPTIONS[0]}
-					expanded={expandedSubscriptionId === HOME_SUBSCRIPTIONS[0].id}
-					onPress={() =>
-						setExpandedSubscriptionId((currentId) =>
-							currentId === HOME_SUBSCRIPTIONS[0].id
-								? null
-								: HOME_SUBSCRIPTIONS[0].id,
-						)
-					}
-				/> */}
+			{/* Set Modal to at the bottom of the screen */}
+			<CreateSubscriptionModal
+				visible={createModalVisible}
+				onClose={() => setCreateModalVisible(false)}
+				onCreate={addSubscription}
+			/>
 		</SafeAreaView>
 	);
 }
